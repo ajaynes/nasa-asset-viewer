@@ -12,41 +12,41 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('mars');
+  const [mediaType, setMediaType] = useState<"all" | "image" | "video">("all");
 
-  useEffect(() => {
-    async function loadMedia() {
-      try {
-        const data = await fetchDataAsync(searchTerm);
-        console.log(data)
-        setSearchResults(data.collection.items);
-      } catch (err) {
-        setError("Something went wrong");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
+  async function loadMedia(term: string, type: "all" | "image" | "video") {
+    try {
+      setLoading(true);
+      const data = await fetchDataAsync(term, type);
+      setSearchResults(data.collection.items);
+    } catch (err) {
+      setError("Something went wrong");
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
+  }
+  useEffect(() => {
+    loadMedia(searchTerm, mediaType);
+  }, [searchTerm, mediaType]);
 
-    loadMedia();
-  }, []);
+  console.log(searchResults)
 
   if (loading) return <div>Loading</div>;
   if (error) return <div>{error}</div>;
-
-  console.log(searchTerm)
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
       <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
         <div className="w-full">
-          <SearchBar />
-          <Filters />
+          <div>{searchTerm}, {mediaType}</div>
+          <SearchBar onSearch={setSearchTerm} />
+          <Filters mediaType={mediaType} onMediaTypeChange={setMediaType} />
           {searchResults.map(result => {
             const meta = result.data[0];
             const thumb =
-              result.links?.find((l) => l.rel === "preview") ??
+              result.links?.find(link => link.rel === "preview") ??
               result.links?.[0];
-
             return (
               <Card
                 key={meta.nasa_id}
@@ -54,6 +54,7 @@ export default function Home() {
                 thumbnailUrl={thumb?.href}
                 keywords={meta.keywords}
                 mediaType={meta.media_type}
+                id={meta.nasa_id}
               />
             );
           })}

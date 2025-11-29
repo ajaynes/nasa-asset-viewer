@@ -5,18 +5,19 @@ type CardProps = {
   thumbnailUrl?: string;
   keywords?: string[];
   mediaType: string | undefined;
+  id: string;
 };
 
-export default function Card({ title, thumbnailUrl, keywords = [], mediaType }: CardProps) {
+export default function Card({ title, thumbnailUrl, keywords = [], mediaType, id }: CardProps) {
   return (
     <div>
       {thumbnailUrl && (
-        <div>
+        <div style={{ position: 'relative', height: 300}}>
           <Image
             src={thumbnailUrl}
-            width={300}
-            height={300}
+            fill={true}
             alt={title}
+            sizes="(max-width: 768px) 100vw, 33vw"
           />
         </div>
       )}
@@ -31,7 +32,7 @@ export default function Card({ title, thumbnailUrl, keywords = [], mediaType }: 
         <div>
           {keywords.map((keyword) => (
             <span
-              key={keyword}
+              key={`${keyword}-${id}`}
             >
               {keyword}
             </span>

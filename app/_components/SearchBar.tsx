@@ -1,23 +1,38 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, ChangeEvent, FormEvent } from 'react';
 
-export default function SearchBar() {
-    const [inputValue, setInputValue ] = useState('');
+type SearchBarProps = {
+  onSearch: (term: string) => void;
+};
 
-     const handleChange = (event) => {
-        setInputValue(event.target.value);
-     };
+export default function SearchBar({ onSearch }: SearchBarProps) {
+  const [inputValue, setInputValue] = useState('');
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        console.log('Submitted value:', inputValue);
-    };
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setInputValue(event.target.value);
+  };
 
-    return (
-        <form onSubmit={handleSubmit}>
-            <input type="text" placeholder="Search" className="bg-slate-200 text-black" value={inputValue} onChange={handleChange} />
-            <button type="submit" className="bg-blue text-white">Search</button>
-        </form>
-    )
+  const handleSubmit = (event: FormEvent) => {
+    event.preventDefault();
+    const trimmed = inputValue.trim();
+    if (trimmed) {
+      onSearch(trimmed);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        placeholder="Search"
+        className="bg-slate-200 text-black"
+        value={inputValue}
+        onChange={handleChange}
+      />
+      <button type="submit" className="bg-blue-400 text-black p-1">
+        Search
+      </button>
+    </form>
+  );
 }

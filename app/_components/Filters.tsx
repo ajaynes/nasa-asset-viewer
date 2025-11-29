@@ -1,17 +1,20 @@
 "use client";
 
-import { useState } from 'react';
+import type { ChangeEvent } from "react";
 
-export default function Filters() {
-  const [mediaType, setMediaType] = useState('all');
+type FiltersProps = {
+  mediaType: "all" | "image" | "video";
+  onMediaTypeChange: (value: "all" | "image" | "video") => void;
+};
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setMediaType(event.target.value);
+export default function Filters({ mediaType, onMediaTypeChange }: FiltersProps) {
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    onMediaTypeChange(event.target.value as "all" | "image" | "video");
   };
 
   return (
     <>
-      <div>Type: {mediaType}</div>
       <label>
         <input
           type="radio"

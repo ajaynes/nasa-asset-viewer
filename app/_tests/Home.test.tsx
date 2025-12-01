@@ -43,6 +43,28 @@ const mockNasaItemMars = {
   ],
 };
 
+const mockNasaItemJupiter = {
+  data: [
+    {
+      nasa_id: "JUPITER_ID",
+      title: "Jupiter Image",
+      description: "Jupiter description",
+      date_created: "2024-01-01T00:00:00Z",
+      location: "Jupiter",
+      photographer: "Jupiter Photographer",
+      keywords: ["jupiter", "planet"],
+      media_type: "image",
+    },
+  ],
+  links: [
+    {
+      href: "https://example.com/jupiter-preview.jpg",
+      rel: "preview",
+      render: "image",
+    },
+  ],
+};
+
 const buildResponse = (items: any[]) =>
   ({
     collection: {
@@ -55,6 +77,7 @@ const buildResponse = (items: any[]) =>
 beforeEach(() => {
   jest.clearAllMocks();
 });
+
 
 it("loading, API fetch, render initial results", async () => {
   testFetch.mockResolvedValueOnce(buildResponse([mockNasaItemMars]));
@@ -87,4 +110,35 @@ it("error for failed API call", async () => {
   expect(errorMessage).toBeInTheDocument();
 
   expect(screen.queryByRole("heading", { name: /mars image/i })).toBeNull();
+});
+
+
+it("search new term and load results", async () => {
+    testFetch
+        .mockResolvedValueOnce(buildResponse([mockNasaItemMars]))
+        .mockResolvedValueOnce(buildResponse([mockNasaItemJupiter]));
+
+    const user = userEvent.setup();
+
+    render(<Home />)
+
+    await screen.findByRole("heading", { name: /mars image/i });
+
+    const input = screen.getByPlaceholderText(/search/i);
+    const button = screen.getByRole("button", { name: /search/i });
+
+    await user.type(input, "jupiter");
+    await user.click(button);
+
+    await waitFor(() => {
+        expect(testFetch).toHaveBeenLastCalledWith("jupiter", "all");
+    });
+
+    const jupiterHeading = await screen.findByRole("heading", {
+        name: /jupiter image/i,
+    });
+
+    expect(jupiterHeading).toBeInTheDocument();
+
+    expect(screen.queryByRole("heading", { name: /mars image/i })).toBeNull();
 });

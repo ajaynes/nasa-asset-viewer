@@ -19,10 +19,18 @@ export default function DetailView({ item }: DetailViewProps) {
     firstLink ??
     null;
 
+    console.log(item)
+
   return (
     <div>
       <h1>Title: {item.data[0]?.title}</h1>
       <p>Description: {item.data[0]?.description}</p>
+      <p>Location: {item.data[0]?.location}</p>
+      <p>Photographer: {item.data[0]?.photographer}</p>
+      <p>Date: {item.data[0]?.date_created}</p>
+      <div>{item.data[0]?.keywords?.map(key => (
+        <p key={`${key}-${item.data[0]?.nasa_id}`}>{key}</p>
+      ))}</div>
       {imageThumb?.href && (
         <Image
           src={imageThumb.href}

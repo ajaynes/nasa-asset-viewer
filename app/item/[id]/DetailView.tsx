@@ -1,22 +1,39 @@
+'use client';
+
 import Image from "next/image";
-export default function DetailView({item}) {
-    console.log(item.links[4])
+import type { NasaItem } from "@/app/_types/nasa";
 
-    const imageLink = item.links.find(link => link.rel === "canonical") ?? item.link[0];
-    const imageThumb = item.links.find(link => link.rel === "preview") ?? item.link[0];
+type DetailViewProps = {
+  item: NasaItem;
+};
 
-    console.log(imageLink.href)
+export default function DetailView({ item }: DetailViewProps) {
+  const firstLink = item.links?.[0];
+    const imageLink =
+    item.links?.find(link => link.rel === "canonical") ??
+    firstLink ??
+    null;
 
-    return (
-        <div>
-            <h1>Title: {item.data[0].title}</h1>
-            <p>Description: {item.data[0].description}</p>
-            <div>Date taken: {item.data[0].date_created}</div>
-            <div>Location: {item.data[0].location}</div>
-            <div>Photographer: {item.data[0].photographer}</div>
-            <Image src={imageThumb.href} alt={item.data[0].title} height={400} width={400} />
-            <a href={imageLink.href}>Download Image</a>
-        </div>
-    )
+  const imageThumb =
+    item.links?.find(link => link.rel === "preview") ??
+    firstLink ??
+    null;
 
+  return (
+    <div>
+      <h1>Title: {item.data[0]?.title}</h1>
+      <p>Description: {item.data[0]?.description}</p>
+      {imageThumb?.href && (
+        <Image
+          src={imageThumb.href}
+          alt={item.data[0]?.title ?? "NASA image"}
+          width={400}
+          height={400}
+        />
+      )}
+      {imageLink?.href && (
+        <a href={imageLink.href}>Download Image</a>
+      )}
+    </div>
+  );
 }

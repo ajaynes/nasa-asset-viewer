@@ -27,3 +27,21 @@ export async function fetchDataAsync(
   const data: NasaSearchResponse = await response.json();
   return data;
 }
+
+export async function fetchItemById(
+  nasaId: string
+): Promise<NasaSearchResponse> {
+  const params = new URLSearchParams({
+    nasa_id: nasaId,
+  });
+
+  const response = await fetch(`${baseUrl}?${params.toString()}`);
+
+  if (!response.ok) {
+    throw new Error(`Error fetching NASA item: ${response.status}`);
+  }
+
+  const data: NasaSearchResponse = await response.json();
+  return data;
+}
+

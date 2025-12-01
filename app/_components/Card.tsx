@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 type CardProps = {
   title: string;
@@ -10,9 +11,10 @@ type CardProps = {
 
 export default function Card({ title, thumbnailUrl, keywords = [], mediaType, id }: CardProps) {
   return (
+    <Link href={`/item/${id}`}>
     <div>
       {thumbnailUrl && (
-        <div style={{ position: 'relative', height: 300}}>
+        <div style={{ position: "relative", height: 300}}>
           <Image
             src={thumbnailUrl}
             fill={true}
@@ -40,5 +42,6 @@ export default function Card({ title, thumbnailUrl, keywords = [], mediaType, id
         </div>
       )}
     </div>
+    </Link>
   );
 }

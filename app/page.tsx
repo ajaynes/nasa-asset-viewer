@@ -11,7 +11,7 @@ export default function Home() {
   const [searchResults, setSearchResults] = useState<NasaItem[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('mars');
+  const [searchTerm, setSearchTerm] = useState("mars");
   const [mediaType, setMediaType] = useState<"all" | "image" | "video">("all");
 
   async function loadMedia(term: string, type: "all" | "image" | "video") {

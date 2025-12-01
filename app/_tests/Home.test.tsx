@@ -74,3 +74,17 @@ it("loading, API fetch, render initial results", async () => {
 
   expect(screen.getByText(/media type:\s*image/i)).toBeInTheDocument();
 });
+
+
+it("error for failed API call", async () => {
+  testFetch.mockRejectedValueOnce(new Error("error"));
+
+  render(<Home />);
+
+  expect(screen.getByText(/loading/i)).toBeInTheDocument();
+
+  const errorMessage = await screen.findByText(/something went wrong/i);
+  expect(errorMessage).toBeInTheDocument();
+
+  expect(screen.queryByRole("heading", { name: /mars image/i })).toBeNull();
+});

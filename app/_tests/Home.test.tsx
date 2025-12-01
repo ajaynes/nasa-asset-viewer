@@ -7,6 +7,7 @@ import { fetchDataAsync } from "@/app/_utils/fetch";
 import type { NasaSearchResponse } from "@/app/_types/nasa";
 
 jest.mock("next/image", () => (props: any) => {
+  // eslint-disable-next-line jsx-a11y/alt-text, @next/next/no-img-element
   return <img {...props} />;
 });
 
@@ -141,4 +142,22 @@ it("search new term and load results", async () => {
     expect(jupiterHeading).toBeInTheDocument();
 
     expect(screen.queryByRole("heading", { name: /mars image/i })).toBeNull();
+});
+
+
+it("filter results by media type", async () => {
+  testFetch.mockResolvedValue(buildResponse([mockNasaItemMars]));
+
+  const user = userEvent.setup();
+  render(<Home />);
+
+  await screen.findByRole("heading", { name: /mars image/i });
+
+  const videoRadio = screen.getByLabelText(/video/i);
+
+  await user.click(videoRadio);
+
+  await waitFor(() => {
+    expect(testFetch).toHaveBeenLastCalledWith("mars", "video");
+  });
 });

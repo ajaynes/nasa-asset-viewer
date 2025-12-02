@@ -14,7 +14,7 @@ export default function Card({ title, thumbnailUrl, keywords = [], mediaType, id
     <Link href={`/item/${id}`}>
       <article className='flex h-full flex-col overflow-hidden rounded-md border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md'>
         <div className='relative w-full overflow-hidden bg-slate-100'>
-          <div className='relative aspect-[16/9]'>
+          <div className='relative aspect-video'>
             {thumbnailUrl && <Image src={thumbnailUrl} fill={true} alt={title} className='object-cover' sizes='(min-width: 768px) 400px, 100vw' />}
           </div>
         </div>

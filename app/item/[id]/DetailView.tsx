@@ -8,6 +8,7 @@ type DetailViewProps = {
 };
 
 export default function DetailView({ item }: DetailViewProps) {
+  // TODO: fix - broken for videos
   const firstLink = item.links?.[0];
     const imageLink =
     item.links?.find(link => link.rel === "canonical") ??

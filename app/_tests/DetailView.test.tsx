@@ -1,8 +1,11 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable react/display-name */
 import { render, screen } from "@testing-library/react";
 import DetailView from "@/app/item/[id]/DetailView";
 import type { NasaItem } from "@/app/_types/nasa";
 
-// eslint-disable-next-line react/display-name, @typescript-eslint/no-explicit-any
 jest.mock("next/image", () => (props: any) => {
   return <img {...props} />;
 });
@@ -64,7 +67,7 @@ const mockItemNoRel: NasaItem = {
   links: [
     {
         href: "https://example.com/fallback.jpg",
-        // rel: ""
+        rel: ""
     },
   ],
 };

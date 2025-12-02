@@ -20,7 +20,7 @@ jest.mock('@/app/_utils/fetch', () => ({
   fetchDataAsync: jest.fn(),
 }));
 
-const testFetch = fetchDataAsync as jest.MockedFunction<typeof fetchDataAsync>;
+const mockFetch = fetchDataAsync as jest.MockedFunction<typeof fetchDataAsync>;
 
 const mockNasaItemMars = {
   data: [
@@ -81,13 +81,13 @@ beforeEach(() => {
 
 
 it("loading, API fetch, render initial results", async () => {
-  testFetch.mockResolvedValueOnce(buildResponse([mockNasaItemMars]));
+  mockFetch.mockResolvedValueOnce(buildResponse([mockNasaItemMars]));
 
   render(<Home />);
 
   expect(screen.getByText(/loading/i)).toBeInTheDocument();
 
-  expect(testFetch).toHaveBeenCalledWith("mars", "all");
+  expect(mockFetch).toHaveBeenCalledWith("mars", "all");
 
   const marsHeading = await screen.findByRole("heading", {
     name: /mars image/i,
@@ -101,7 +101,7 @@ it("loading, API fetch, render initial results", async () => {
 
 
 it("error for failed API call", async () => {
-  testFetch.mockRejectedValueOnce(new Error("error"));
+  mockFetch.mockRejectedValueOnce(new Error("error"));
 
   render(<Home />);
 
@@ -115,7 +115,7 @@ it("error for failed API call", async () => {
 
 
 it("search new term and load results", async () => {
-    testFetch
+    mockFetch
         .mockResolvedValueOnce(buildResponse([mockNasaItemMars]))
         .mockResolvedValueOnce(buildResponse([mockNasaItemJupiter]));
 
@@ -132,7 +132,7 @@ it("search new term and load results", async () => {
     await user.click(button);
 
     await waitFor(() => {
-        expect(testFetch).toHaveBeenLastCalledWith("jupiter", "all");
+        expect(mockFetch).toHaveBeenLastCalledWith("jupiter", "all");
     });
 
     const jupiterHeading = await screen.findByRole("heading", {
@@ -146,7 +146,7 @@ it("search new term and load results", async () => {
 
 
 it("filter results by media type", async () => {
-  testFetch.mockResolvedValue(buildResponse([mockNasaItemMars]));
+  mockFetch.mockResolvedValue(buildResponse([mockNasaItemMars]));
 
   const user = userEvent.setup();
   render(<Home />);
@@ -158,6 +158,6 @@ it("filter results by media type", async () => {
   await user.click(videoRadio);
 
   await waitFor(() => {
-    expect(testFetch).toHaveBeenLastCalledWith("mars", "video");
+    expect(mockFetch).toHaveBeenLastCalledWith("mars", "video");
   });
 });

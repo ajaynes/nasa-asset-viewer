@@ -30,23 +30,24 @@ export default function Home() {
     loadMedia(searchTerm, mediaType);
   }, [searchTerm, mediaType]);
 
-  console.log(searchResults)
-
   if (loading) return <div>Loading</div>;
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <div className="w-full">
-          <div>{searchTerm}, {mediaType}</div>
+    <main>
+      <div className="mx-auto w-full max-w-7xl px-4 py-6">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <SearchBar onSearch={setSearchTerm} />
           <Filters mediaType={mediaType} onMediaTypeChange={setMediaType} />
+        </div>
+      </div>
+      <section className="mx-auto w-full max-w-7xl px-4 py-8">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {searchResults.map(result => {
-            const meta = result.data[0];
-            const thumb =
-              result.links?.find(link => link.rel === "preview") ??
-              result.links?.[0];
+          const meta = result.data[0];
+          const thumb =
+          result.links?.find(link => link.rel === "preview") ??
+          result.links?.[0];
             return (
               <Card
                 key={meta.nasa_id}
@@ -59,7 +60,7 @@ export default function Home() {
             );
           })}
         </div>
-      </main>
-    </div>
+      </section>
+    </main>
   );
 }

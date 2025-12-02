@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState, ChangeEvent, FormEvent } from 'react';
 
 type SearchBarProps = {
   onSearch: (term: string) => void;
 };
 
 export default function SearchBar({ onSearch }: SearchBarProps) {
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState('');
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
@@ -22,15 +22,19 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Search"
-        className="bg-slate-200 text-black"
-        value={inputValue}
-        onChange={handleChange}
-      />
-      <button type="submit" className="bg-blue-400 text-black p-1">
+    <form onSubmit={handleSubmit} className='flex w-full flex-1 items-center gap-3'>
+      <div className='relative flex-1'>
+        <input
+          type='text'
+          placeholder='Search NASA media…'
+          className='w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 pr-10 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/40'
+          value={inputValue}
+          onChange={handleChange}
+        />
+      </div>
+      <button
+        type='submit'
+        className='cursor-pointer inline-flex items-center justify-center rounded-lg bg-indigo-600 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 disabled:cursor-not-allowed disabled:opacity-60'>
         Search
       </button>
     </form>

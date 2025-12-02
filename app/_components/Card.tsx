@@ -1,5 +1,5 @@
-import Image from "next/image";
-import Link from "next/link";
+import Image from 'next/image';
+import Link from 'next/link';
 
 type CardProps = {
   title: string;
@@ -12,36 +12,37 @@ type CardProps = {
 export default function Card({ title, thumbnailUrl, keywords = [], mediaType, id }: CardProps) {
   return (
     <Link href={`/item/${id}`}>
-    <div>
-      {thumbnailUrl && (
-        <div style={{ position: "relative", height: 300}}>
-          <Image
-            src={thumbnailUrl}
-            fill={true}
-            alt={title}
-            sizes="(max-width: 768px) 100vw, 33vw"
-          />
+      <article className='flex h-full flex-col overflow-hidden rounded-md border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md'>
+        <div className='relative w-full overflow-hidden bg-slate-100'>
+          <div className='relative aspect-[16/9]'>
+            {thumbnailUrl && <Image src={thumbnailUrl} fill={true} alt={title} className='object-cover' sizes='(min-width: 768px) 400px, 100vw' />}
+          </div>
         </div>
-      )}
 
-      <h2>{title}</h2>
+        <div className='flex flex-1 flex-col gap-3 p-4'>
+          <h3 className='line-clamp-2 text-lg font-semibold text-slate-900'>{title}</h3>
 
-      <div>
-        Media type: {mediaType}
-      </div>
+          {keywords?.length > 0 && (
+            <div className='flex flex-wrap gap-2'>
+              {/* TODO: find a better unique key */}
+              {keywords.slice(0, 4).map((keyword, i) => (
+                <span
+                  key={`${keyword}-${i}`}
+                  className='rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-700'>
+                  {keyword}
+                </span>
+              ))}
+            </div>
+          )}
 
-      {keywords.length > 0 && (
-        <div>
-          {keywords.map((keyword) => (
-            <span
-              key={`${keyword}-${id}`}
-            >
-              {keyword}
+          <div className='mt-auto flex items-center justify-between pt-2 text-xs text-slate-500'>
+            <span className='inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 font-medium uppercase tracking-wide'>
+              <span className='h-1.5 w-1.5 rounded-full bg-emerald-500' />
+              {mediaType}
             </span>
-          ))}
+          </div>
         </div>
-      )}
-    </div>
+      </article>
     </Link>
   );
 }

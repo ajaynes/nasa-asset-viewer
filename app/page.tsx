@@ -11,6 +11,12 @@ import GridSkeleton from "@/app/_components/GridSkeleton";
 import HomeHeaderSkeleton from "@/app/_components/HomeHeaderSkeleton";
 
 const pageSize = 24;
+const STORAGE_KEY = "nasa-search-state";
+
+type StoredSearchState = {
+  term: string;
+  mediaType: "all" | "image" | "video";
+};
 
 export default function Home() {
   const [searchResults, setSearchResults] = useState<NasaItem[]>([]);
@@ -20,6 +26,33 @@ export default function Home() {
   const [mediaType, setMediaType] = useState<"all" | "image" | "video">("all");
   const [page, setPage] = useState(1);
   const [totalHits, setTotalHits] = useState(0);
+
+  const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const saved = window.localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved) as Partial<StoredSearchState>;
+        if (parsed.term) {
+          setSearchTerm(parsed.term);
+        }
+        if (
+          parsed.mediaType === "all" ||
+          parsed.mediaType === "image" ||
+          parsed.mediaType === "video"
+        ) {
+          setMediaType(parsed.mediaType);
+        }
+      } catch {
+        // ignore bad JSON
+      }
+    }
+
+    setHydrated(true);
+  }, []);
 
   async function loadMedia(term: string, type: "all" | "image" | "video", pageNum: number) {
     try {
@@ -40,8 +73,18 @@ export default function Home() {
   }
 
   useEffect(() => {
+    if (!hydrated) return;
+
+    if (typeof window !== "undefined") {
+      const stateToStore: StoredSearchState = {
+        term: searchTerm,
+        mediaType,
+      };
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(stateToStore));
+    }
+
     loadMedia(searchTerm, mediaType, page);
-  }, [searchTerm, mediaType, page]);
+  }, [searchTerm, mediaType, page, hydrated]);
 
   const totalPages = totalHits && pageSize ? Math.ceil(totalHits / pageSize) : null;
 

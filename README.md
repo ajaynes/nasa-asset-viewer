@@ -76,7 +76,6 @@ Manual testing was performed using the following free tools:
 - WAVE accessibility extension
 - Chrome Lighthouse
 
-
 Passing automated checks does not guarantee full accessibility compliance. Manual audits were conducted to validate real-world usage and browser behavior.
 
 ---
@@ -89,7 +88,7 @@ NASA retains ownership of all media assets.
 
 NASA API documentation:
 
-https://images.nasa.gov/docs/images.nasa.gov_api_docs.pdf - *NOTE: this returns a 404*
+https://images.nasa.gov/docs/images.nasa.gov_api_docs.pdf - _NOTE: this returns a 404_
 
 ---
 

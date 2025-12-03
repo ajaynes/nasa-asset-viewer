@@ -2,7 +2,12 @@ export interface NasaSearchResponse {
   collection: NasaCollection;
 }
 
+export type NasaMetadata = {
+  total_hits: number;
+};
+
 export interface NasaCollection {
+  metadata?: NasaMetadata;
   version: string;
   href: string;
   items: NasaItem[];

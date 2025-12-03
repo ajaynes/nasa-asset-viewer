@@ -5,17 +5,18 @@ const SEARCH_URL = `${API_ROOT}/search`;
 
 export async function fetchDataAsync(
   query: string,
-  mediaType: "all" | "image" | "video" = "all"
+  mediaType: "all" | "image" | "video" = "all",
+  page: number = 1
 ): Promise<NasaSearchResponse> {
   const params = new URLSearchParams({
     q: query,
     page_size: "24",
+    page: String(page),
   });
 
   if (mediaType === "image" || mediaType === "video") {
     params.set("media_type", mediaType);
   } else {
-    // all = images + videos
     params.set("media_type", "image,video");
   }
 

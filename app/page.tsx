@@ -28,7 +28,7 @@ export default function Home() {
   const [totalHits, setTotalHits] = useState(0);
 
   const [hydrated, setHydrated] = useState(false);
-
+  // on first render, try to restore last search from localStorage
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -36,6 +36,7 @@ export default function Home() {
     if (saved) {
       try {
         const parsed = JSON.parse(saved) as Partial<StoredSearchState>;
+        // restore saved search term if it exists
         if (parsed.term) {
           setSearchTerm(parsed.term);
         }
@@ -54,6 +55,7 @@ export default function Home() {
     setHydrated(true);
   }, []);
 
+  // helper to fetch data from the api and update state
   async function loadMedia(term: string, type: "all" | "image" | "video", pageNum: number) {
     try {
       setLoading(true);
@@ -72,6 +74,8 @@ export default function Home() {
     }
   }
 
+  // whenever search term, media type, or page changes, fetch new data
+  // also updates localStorage with the current search settings
   useEffect(() => {
     if (!hydrated) return;
 
@@ -80,6 +84,7 @@ export default function Home() {
         term: searchTerm,
         mediaType,
       };
+      // remember the last search in localStorage
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(stateToStore));
     }
 
@@ -100,7 +105,7 @@ export default function Home() {
     );
   }
 
-  if (error) return <div>{error}</div>;
+  if (error) return <div className="text-white text-lg text-center">{error}</div>;
 
   return (
     <main>

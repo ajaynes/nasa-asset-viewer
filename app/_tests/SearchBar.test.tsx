@@ -1,75 +1,72 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
-import SearchBar from '@/app/_components/SearchBar';
+import SearchBar from "@/app/_components/SearchBar";
 
-describe('SearchBar', () => {
-  it('renders the search input and btn', () => {
+describe("SearchBar", () => {
+  it("renders the search input and btn", () => {
     const mockSearch = jest.fn();
     render(<SearchBar onSearch={mockSearch} />);
 
     const input = screen.getByPlaceholderText(/search/i);
-    const button = screen.getByRole('button', { name: /search/i });
+    const button = screen.getByRole("button", { name: /search/i });
 
     expect(input).toBeInTheDocument();
     expect(button).toBeInTheDocument();
   });
 
-  it('update input value as user types', async () => {
+  it("update input value as user types", async () => {
     const mockSearch = jest.fn();
     const user = userEvent.setup();
     render(<SearchBar onSearch={mockSearch} />);
 
     const input = screen.getByPlaceholderText(/search/i);
 
-    await user.type(input, 'mars');
+    await user.type(input, "mars");
 
-    expect(input).toHaveValue('mars');
+    expect(input).toHaveValue("mars");
   });
 
-  it('submit by typing enter', async () => {
+  it("submit by typing enter", async () => {
     const mockSearch = jest.fn();
     const user = userEvent.setup();
     render(<SearchBar onSearch={mockSearch} />);
 
     const input = screen.getByPlaceholderText(/search/i);
 
-    await user.type(input, 'saturn{enter}');
+    await user.type(input, "saturn{enter}");
 
     expect(mockSearch).toHaveBeenCalledTimes(1);
-    expect(mockSearch).toHaveBeenCalledWith('saturn');
+    expect(mockSearch).toHaveBeenCalledWith("saturn");
   });
 
-
-  it('submits by pressing Enter and calls onSearch with trimmed value', async () => {
+  it("submits by pressing Enter and calls onSearch with trimmed value", async () => {
     const mockSearch = jest.fn();
     const user = userEvent.setup();
     render(<SearchBar onSearch={mockSearch} />);
 
     const input = screen.getByPlaceholderText(/search/i);
 
-    await user.type(input, '   saturn  {enter}');
+    await user.type(input, "   saturn  {enter}");
 
     expect(mockSearch).toHaveBeenCalledTimes(1);
-    expect(mockSearch).toHaveBeenCalledWith('saturn');
+    expect(mockSearch).toHaveBeenCalledWith("saturn");
   });
 
-
-  it('submits by clicking the Search button', async () => {
+  it("submits by clicking the Search button", async () => {
     const mockSearch = jest.fn();
     const user = userEvent.setup();
     render(<SearchBar onSearch={mockSearch} />);
 
     const input = screen.getByPlaceholderText(/search/i);
-    const button = screen.getByRole('button', { name: /search/i });
+    const button = screen.getByRole("button", { name: /search/i });
 
-    await user.type(input, 'jupiter');
+    await user.type(input, "jupiter");
     await user.click(button);
 
     expect(mockSearch).toHaveBeenCalledTimes(1);
-    expect(mockSearch).toHaveBeenCalledWith('jupiter');
+    expect(mockSearch).toHaveBeenCalledWith("jupiter");
   });
-
 
   it("does not call onSearch when input is empty", async () => {
     const mockSearch = jest.fn();
@@ -82,7 +79,6 @@ describe('SearchBar', () => {
 
     expect(mockSearch).not.toHaveBeenCalled();
   });
-
 
   it("does not call onSearch when input is only whitespace", async () => {
     const mockSearch = jest.fn();
@@ -98,11 +94,9 @@ describe('SearchBar', () => {
     expect(mockSearch).not.toHaveBeenCalled();
   });
 
-
-it("has no accessibility violations", async () => {
-  const { container } = render(<SearchBar onSearch={jest.fn()} />);
-  const results = await axe(container);
-  expect(results).toHaveNoViolations();
-});
-
+  it("has no accessibility violations", async () => {
+    const { container } = render(<SearchBar onSearch={jest.fn()} />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
 });

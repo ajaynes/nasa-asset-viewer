@@ -44,7 +44,6 @@ describe("fetchDataAsync", () => {
     expect(calledUrl).toContain("media_type=image%2Cvideo");
   });
 
-
   it('calls fetch with media_type=image when mediaType is "image"', async () => {
     (global.fetch as jest.Mock).mockResolvedValueOnce({
       ok: true,
@@ -61,7 +60,6 @@ describe("fetchDataAsync", () => {
     expect(calledUrl).not.toContain("image%2Cvideo");
   });
 
-
   it('calls fetch with media_type=video when mediaType is "video"', async () => {
     (global.fetch as jest.Mock).mockResolvedValueOnce({
       ok: true,
@@ -77,7 +75,6 @@ describe("fetchDataAsync", () => {
     expect(calledUrl).toContain("media_type=video");
   });
 
-
   it("returns parsed response data on success", async () => {
     (global.fetch as jest.Mock).mockResolvedValueOnce({
       ok: true,
@@ -90,7 +87,6 @@ describe("fetchDataAsync", () => {
     expect(data.collection.metadata?.total_hits).toBe(1);
   });
 
-
   it("throws error on failed respose", async () => {
     (global.fetch as jest.Mock).mockResolvedValueOnce({
       ok: false,
@@ -98,9 +94,7 @@ describe("fetchDataAsync", () => {
       json: async () => ({}),
     } as any);
 
-    await expect(fetchDataAsync("mars", "all", 1)).rejects.toThrow(
-      "Error fetching NASA data: 500"
-    );
+    await expect(fetchDataAsync("mars", "all", 1)).rejects.toThrow("Error fetching NASA data: 500");
 
     expect(global.fetch).toHaveBeenCalledTimes(1);
   });

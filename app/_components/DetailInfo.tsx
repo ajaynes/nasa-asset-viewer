@@ -23,19 +23,13 @@ export default function DetailInfo({
     <div className="space-y-4">
       <header className="space-y-2">
         {mediaType && (
-          <p className="text-xs font-semibold uppercase tracking-wide text-slate-50">
-            {mediaType}
-          </p>
+          <p className="text-xs font-semibold uppercase tracking-wide text-slate-50">{mediaType}</p>
         )}
-        <h1 className="text-2xl font-semibold text-slate-50 md:text-3xl">
-          {title}
-        </h1>
+        <h1 className="text-2xl font-semibold text-slate-50 md:text-3xl">{title}</h1>
       </header>
 
       {description && (
-        <p className="whitespace-pre-line text-sm leading-relaxed text-slate-300">
-          {description}
-        </p>
+        <p className="whitespace-pre-line text-sm leading-relaxed text-slate-300">{description}</p>
       )}
 
       <dl className="grid gap-4 text-sm text-slate-50">
@@ -50,9 +44,7 @@ export default function DetailInfo({
 
         {dateCreated && (
           <div className="flex flex-col gap-1 text-slate-50">
-            <dt className="text-xs font-semibold uppercase tracking-wide text-slate-300">
-              Date
-            </dt>
+            <dt className="text-xs font-semibold uppercase tracking-wide text-slate-300">Date</dt>
             <dd>
               {new Date(dateCreated).toLocaleDateString(undefined, {
                 year: "numeric",
@@ -75,9 +67,7 @@ export default function DetailInfo({
 
       {keywords && keywords.length > 0 && (
         <div className="space-y-2 text-slate-50">
-          <h2 className="text-xs font-semibold uppercase tracking-wide text-slate-300">
-            Keywords
-          </h2>
+          <h2 className="text-xs font-semibold uppercase tracking-wide text-slate-300">Keywords</h2>
           <div className="flex flex-wrap gap-2">
             {keywords.map((key) => (
               <span

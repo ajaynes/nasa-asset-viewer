@@ -1,10 +1,9 @@
-import { render, screen } from '@testing-library/react';
-import Home from '@/app/page';
+import { render, screen } from "@testing-library/react";
+import Home from "@/app/page";
 
-describe('Home page', () => {
-  it('testing shell', () => {
+describe("Home page", () => {
+  it("testing shell", () => {
     render(<Home />);
-    expect(screen.getByRole('main')).toBeInTheDocument();
+    expect(screen.getByRole("main")).toBeInTheDocument();
   });
 });
-

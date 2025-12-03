@@ -35,11 +35,9 @@ export default function DetailView({
   const rawMediaType = meta.media_type?.toLowerCase();
   const firstLink = item.links?.[0];
 
-  const previewLink =
-    item.links?.find((link) => link.rel === "preview") ?? firstLink ?? null;
+  const previewLink = item.links?.find((link) => link.rel === "preview") ?? firstLink ?? null;
 
-  const canonicalLink =
-    item.links?.find((link) => link.rel === "canonical") ?? firstLink ?? null;
+  const canonicalLink = item.links?.find((link) => link.rel === "canonical") ?? firstLink ?? null;
 
   const fallbackImageUrl = previewLink?.href ?? "";
   const fallbackDownloadUrl = canonicalLink?.href ?? fallbackImageUrl;
@@ -62,9 +60,7 @@ export default function DetailView({
       : explicitMediaUrl || fallbackImageUrl;
 
   const downloadUrl =
-    mediaType === "video" && explicitMediaUrl
-      ? explicitMediaUrl
-      : fallbackDownloadUrl;
+    mediaType === "video" && explicitMediaUrl ? explicitMediaUrl : fallbackDownloadUrl;
 
   const poster = posterUrl || (mediaType === "image" ? mainMediaUrl : null);
 

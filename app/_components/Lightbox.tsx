@@ -43,11 +43,7 @@ export default function Lightbox({
       aria-modal="true"
       role="dialog"
     >
-      <div
-        className="absolute inset-0"
-        onClick={onClose}
-        aria-hidden="true"
-      />
+      <div className="absolute inset-0" onClick={onClose} aria-hidden="true" />
 
       <button
         type="button"
@@ -69,13 +65,7 @@ export default function Lightbox({
               >
                 <source src={mediaUrl} />
                 {captionsUrl && (
-                  <track
-                    kind="subtitles"
-                    src={captionsUrl}
-                    srcLang="en"
-                    label="English"
-                    default
-                  />
+                  <track kind="subtitles" src={captionsUrl} srcLang="en" label="English" default />
                 )}
                 Your browser does not support videos.
               </video>

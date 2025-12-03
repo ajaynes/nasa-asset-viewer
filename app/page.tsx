@@ -21,20 +21,12 @@ export default function Home() {
   const [page, setPage] = useState(1);
   const [totalHits, setTotalHits] = useState(0);
 
-  async function loadMedia(
-    term: string,
-    type: "all" | "image" | "video",
-    pageNum: number
-  ) {
+  async function loadMedia(term: string, type: "all" | "image" | "video", pageNum: number) {
     try {
       setLoading(true);
       setError(null);
 
-      const data: NasaSearchResponse = await fetchDataAsync(
-        term,
-        type,
-        pageNum
-      );
+      const data: NasaSearchResponse = await fetchDataAsync(term, type, pageNum);
 
       setSearchResults(data.collection.items);
       const hits = data.collection.metadata?.total_hits ?? 0;
@@ -51,21 +43,19 @@ export default function Home() {
     loadMedia(searchTerm, mediaType, page);
   }, [searchTerm, mediaType, page]);
 
-  const totalPages =
-    totalHits && pageSize ? Math.ceil(totalHits / pageSize) : null;
+  const totalPages = totalHits && pageSize ? Math.ceil(totalHits / pageSize) : null;
 
   const hasPrevPage = page > 1;
-  const hasNextPage =
-    totalPages !== null ? page < totalPages : searchResults.length === pageSize;
+  const hasNextPage = totalPages !== null ? page < totalPages : searchResults.length === pageSize;
 
   if (loading && !searchResults.length) {
-  return (
-    <section className="mx-auto max-w-7xl px-4 py-8">
-      <HomeHeaderSkeleton />
-      <GridSkeleton />
-    </section>
-  );
-}
+    return (
+      <section className="mx-auto max-w-7xl px-4 py-8">
+        <HomeHeaderSkeleton />
+        <GridSkeleton />
+      </section>
+    );
+  }
 
   if (error) return <div>{error}</div>;
 
@@ -93,9 +83,7 @@ export default function Home() {
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {searchResults.map((result) => {
             const meta = result.data[0];
-            const thumb =
-              result.links?.find((link) => link.rel === "preview") ??
-              result.links?.[0];
+            const thumb = result.links?.find((link) => link.rel === "preview") ?? result.links?.[0];
 
             return (
               <Card

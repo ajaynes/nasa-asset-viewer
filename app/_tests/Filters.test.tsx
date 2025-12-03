@@ -16,9 +16,7 @@ describe("Filters", () => {
 
   it("checks the radio that matches the mediaType prop", () => {
     const mockOnChange = jest.fn();
-    const { rerender } = render(
-      <Filters mediaType="all" onMediaTypeChange={mockOnChange} />
-    );
+    const { rerender } = render(<Filters mediaType="all" onMediaTypeChange={mockOnChange} />);
 
     const allRadio = screen.getByLabelText(/all/i) as HTMLInputElement;
     const imagesRadio = screen.getByLabelText(/images/i) as HTMLInputElement;
@@ -60,10 +58,8 @@ describe("Filters", () => {
   });
 
   it("has no accessibility violations", async () => {
-  const { container } = render(
-    <Filters mediaType="all" onMediaTypeChange={jest.fn()} />
-  );
-  const results = await axe(container);
-  expect(results).toHaveNoViolations();
-});
+    const { container } = render(<Filters mediaType="all" onMediaTypeChange={jest.fn()} />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
 });

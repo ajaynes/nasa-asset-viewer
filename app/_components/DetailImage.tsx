@@ -45,22 +45,12 @@ export default function DetailImage({
           >
             <source src={mediaUrl} />
             {captionsUrl && (
-              <track
-                kind="subtitles"
-                src={captionsUrl}
-                srcLang="en"
-                label="English"
-                default
-              />
+              <track kind="subtitles" src={captionsUrl} srcLang="en" label="English" default />
             )}
             Your browser does not support videos.
           </video>
         ) : (
-          <button
-            type="button"
-            onClick={onOpenLightbox}
-            className="block w-full"
-          >
+          <button type="button" onClick={onOpenLightbox} className="block w-full">
             <div className="relative mx-auto aspect-video max-h-160 md:min-h-140 w-full">
               <Image
                 src={mediaUrl}
@@ -80,16 +70,15 @@ export default function DetailImage({
           onClick={onOpenLightbox}
           className="inline-flex items-center rounded-md bg-slate-50 px-3 py-1.5 text-sm font-medium text-black shadow-sm hover:bg-slate-200 cursor-pointer"
         >
-
           <Image
-          src="/fullscreen.svg"
-          alt="fullscreen icon"
-          width={15}
-          height={20}
-          style={{marginRight: 15}}
-          priority
-        />
-        {mediaType === "video" ? "View Fullscreen" : "View Full Image"}
+            src="/fullscreen.svg"
+            alt="fullscreen icon"
+            width={15}
+            height={20}
+            style={{ marginRight: 15 }}
+            priority
+          />
+          {mediaType === "video" ? "View Fullscreen" : "View Full Image"}
         </button>
 
         <div>
@@ -101,17 +90,17 @@ export default function DetailImage({
             className="inline-flex items-center rounded-md bg-slate-50 px-3 py-1.5 text-sm font-medium text-black shadow-sm hover:bg-slate-200"
           >
             <Image
-            src="/download.svg"
-            alt="download icon"
-            width={25}
-            height={20}
-            style={{marginRight: 15}}
-            priority
-          />
+              src="/download.svg"
+              alt="download icon"
+              width={25}
+              height={20}
+              style={{ marginRight: 15 }}
+              priority
+            />
             Download {mediaType === "video" ? "Video" : "Image"}
           </Link>
-          </div>
         </div>
       </div>
+    </div>
   );
 }

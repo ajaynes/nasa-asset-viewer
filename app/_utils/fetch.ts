@@ -30,9 +30,7 @@ export async function fetchDataAsync(
   return data;
 }
 
-export async function fetchItemById(
-  nasaId: string
-): Promise<NasaSearchResponse> {
+export async function fetchItemById(nasaId: string): Promise<NasaSearchResponse> {
   const cleanId = decodeURIComponent(nasaId);
 
   const params = new URLSearchParams({
@@ -55,12 +53,8 @@ export type NasaAssetManifest = {
   };
 };
 
-export async function fetchAssetManifest(
-  nasaId: string
-): Promise<NasaAssetManifest> {
-  const response = await fetch(
-    `${API_ROOT}/asset/${encodeURIComponent(nasaId)}`
-  );
+export async function fetchAssetManifest(nasaId: string): Promise<NasaAssetManifest> {
+  const response = await fetch(`${API_ROOT}/asset/${encodeURIComponent(nasaId)}`);
 
   if (!response.ok) {
     throw new Error(`Error fetching NASA asset manifest: ${response.status}`);
@@ -74,9 +68,7 @@ function filterByExt(hrefs: string[], exts: string[]): string[] {
   return hrefs.filter((href) => regex.test(href));
 }
 
-export function getBestVideoUrlFromManifest(
-  manifest: NasaAssetManifest
-): string | null {
+export function getBestVideoUrlFromManifest(manifest: NasaAssetManifest): string | null {
   const hrefs = manifest.collection.items?.map((i) => i.href) ?? [];
   const videos = filterByExt(hrefs, ["mp4", "webm", "mov", "m4v", "ogv"]);
   if (!videos.length) return null;
@@ -91,19 +83,9 @@ export function getBestVideoUrlFromManifest(
   return videos[0];
 }
 
-export function getBestPosterFromManifest(
-  manifest: NasaAssetManifest
-): string | null {
+export function getBestPosterFromManifest(manifest: NasaAssetManifest): string | null {
   const hrefs = manifest.collection.items?.map((i) => i.href) ?? [];
-  const images = filterByExt(hrefs, [
-    "jpg",
-    "jpeg",
-    "png",
-    "gif",
-    "webp",
-    "tif",
-    "tiff",
-  ]);
+  const images = filterByExt(hrefs, ["jpg", "jpeg", "png", "gif", "webp", "tif", "tiff"]);
 
   if (!images.length) return null;
 
@@ -117,9 +99,7 @@ export function getBestPosterFromManifest(
   return images[0];
 }
 
-export function getCaptionsFromManifest(
-  manifest: NasaAssetManifest
-): string | null {
+export function getCaptionsFromManifest(manifest: NasaAssetManifest): string | null {
   const hrefs = manifest.collection.items?.map((i) => i.href) ?? [];
   const captions = filterByExt(hrefs, ["vtt", "srt"]);
   return captions[0] ?? null;

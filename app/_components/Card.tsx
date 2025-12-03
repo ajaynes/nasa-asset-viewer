@@ -12,7 +12,7 @@ type CardProps = {
 export default function Card({ title, thumbnailUrl, keywords = [], mediaType, id }: CardProps) {
   return (
     <Link href={`/item/${id}`}>
-      <article className='flex h-full flex-col overflow-hidden rounded-md border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md'>
+      <article className='flex h-full flex-col overflow-hidden rounded-md border border-slate-200 bg-white shadow-md'>
         <div className='relative w-full overflow-hidden bg-slate-100'>
           <div className='relative aspect-video'>
             {thumbnailUrl && <Image src={thumbnailUrl} fill={true} alt={title} className='object-cover' sizes='(min-width: 768px) 400px, 100vw' />}
@@ -24,7 +24,6 @@ export default function Card({ title, thumbnailUrl, keywords = [], mediaType, id
 
           {keywords?.length > 0 && (
             <div className='flex flex-wrap gap-2'>
-              {/* TODO: find a better unique key */}
               {keywords.slice(0, 4).map((keyword, i) => (
                 <span
                   key={`${keyword}-${i}`}

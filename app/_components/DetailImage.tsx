@@ -36,7 +36,7 @@ export default function DetailImage({
 
   return (
     <div className="space-y-4">
-      <div className="overflow-hidden border border-slate-200 bg-slate-900">
+      <div className="overflow-hidden border border-slate-200 rounded-md bg-slate-900">
         {mediaType === "video" ? (
           <video
             className="h-auto max-h-104 w-full object-contain"

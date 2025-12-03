@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { fetchDataAsync } from "@/app/_utils/fetch";
 import type { NasaItem } from "@/app/_types/nasa";
 import Card from "@/app/_components/Card";

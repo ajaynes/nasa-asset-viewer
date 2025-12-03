@@ -14,7 +14,7 @@ export default function Filters({ mediaType, onMediaTypeChange }: FiltersProps) 
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="inline-flex rounded-full border border-slate-300 bg-white px-4 py-3 shadow-sm">
+      <div className="inline-flex rounded-full border border-slate-300 bg-white px-4 py-2 shadow-sm">
         <label className="relative inline-flex cursor-pointer select-none items-center">
           <input
             type="radio"
@@ -24,7 +24,7 @@ export default function Filters({ mediaType, onMediaTypeChange }: FiltersProps) 
             onChange={handleChange}
             className="peer sr-only"
           />
-          <span className="rounded-full px-3 py-1 text-xs font-medium text-slate-700 transition peer-checked:bg-indigo-600 peer-checked:text-white">
+          <span className="rounded-full px-3 py-1.5 text-xs font-medium text-slate-700 transition peer-checked:bg-indigo-600 peer-checked:text-white">
             All
           </span>
         </label>
@@ -37,7 +37,7 @@ export default function Filters({ mediaType, onMediaTypeChange }: FiltersProps) 
             onChange={handleChange}
             className="peer sr-only"
           />
-          <span className="rounded-full px-3 py-1 text-xs font-medium text-slate-700 transition peer-checked:bg-indigo-600 peer-checked:text-white">
+          <span className="rounded-full px-3 py-1.5 text-xs font-medium text-slate-700 transition peer-checked:bg-indigo-600 peer-checked:text-white">
             Images
           </span>
         </label>
@@ -50,7 +50,7 @@ export default function Filters({ mediaType, onMediaTypeChange }: FiltersProps) 
             onChange={handleChange}
             className="peer sr-only"
           />
-          <span className="rounded-full px-3 py-1 text-xs font-medium text-slate-700 transition peer-checked:bg-indigo-600 peer-checked:text-white">
+          <span className="rounded-full px-3 py-1.5 text-xs font-medium text-slate-700 transition peer-checked:bg-indigo-600 peer-checked:text-white">
             Video
           </span>
         </label>

@@ -7,6 +7,8 @@ import Card from "@/app/_components/Card";
 import SearchBar from "@/app/_components/SearchBar";
 import Filters from "@/app/_components/Filters";
 import Pagination from "@/app/_components/Pagination";
+import GridSkeleton from "@/app/_components/GridSkeleton";
+import HomeHeaderSkeleton from "@/app/_components/HomeHeaderSkeleton";
 
 const pageSize = 24;
 
@@ -56,7 +58,15 @@ export default function Home() {
   const hasNextPage =
     totalPages !== null ? page < totalPages : searchResults.length === pageSize;
 
-  if (loading && !searchResults.length) return <div>Loading</div>;
+  if (loading && !searchResults.length) {
+  return (
+    <section className="mx-auto max-w-7xl px-4 py-8">
+      <HomeHeaderSkeleton />
+      <GridSkeleton />
+    </section>
+  );
+}
+
   if (error) return <div>{error}</div>;
 
   return (

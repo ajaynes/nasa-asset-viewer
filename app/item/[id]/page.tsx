@@ -5,14 +5,10 @@ import {
   getBestPosterFromManifest,
   getCaptionsFromManifest,
 } from "@/app/_utils/fetch";
-import DetailView from "./DetailView";
+import DetailView from "@/app/_components/DetailView";
 import type { NasaItem } from "@/app/_types/nasa";
 
-export default async function ItemDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+export default async function ItemDetailPage({ params }: { params: Promise<{ id: string }>; }) {
   const { id } = await params;
 
   const data = await fetchItemById(id);

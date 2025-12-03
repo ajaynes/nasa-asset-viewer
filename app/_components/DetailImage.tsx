@@ -78,11 +78,10 @@ export default function DetailImage({
         <button
           type="button"
           onClick={onOpenLightbox}
-          className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-indigo-800 cursor-pointer"
+          className="inline-flex items-center rounded-md bg-slate-50 px-3 py-1.5 text-sm font-medium text-black shadow-sm hover:bg-slate-200 cursor-pointer"
         >
 
           <Image
-          className="dark:invert"
           src="/fullscreen.svg"
           alt="fullscreen icon"
           width={15}
@@ -99,10 +98,9 @@ export default function DetailImage({
             download
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-indigo-800"
+            className="inline-flex items-center rounded-md bg-slate-50 px-3 py-1.5 text-sm font-medium text-black shadow-sm hover:bg-slate-200"
           >
             <Image
-            className="dark:invert"
             src="/download.svg"
             alt="download icon"
             width={25}

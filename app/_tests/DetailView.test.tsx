@@ -3,7 +3,7 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable react/display-name */
 import { render, screen } from "@testing-library/react";
-import DetailView from "@/app/item/[id]/DetailView";
+import DetailView from "@/app/_components/DetailView";
 import type { NasaItem } from "@/app/_types/nasa";
 
 jest.mock("next/image", () => (props: any) => {

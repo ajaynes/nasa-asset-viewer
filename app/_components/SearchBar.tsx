@@ -23,6 +23,9 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
 
   return (
     <form onSubmit={handleSubmit} className='flex w-full flex-1 items-center gap-3'>
+      <label htmlFor="search-input" className="sr-only">
+        Search NASA media
+      </label>
       <div className='relative flex-1'>
         <input
           type='text'

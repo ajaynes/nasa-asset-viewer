@@ -4,6 +4,7 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable react/display-name */
 import { render, screen } from '@testing-library/react';
+import { axe } from "jest-axe";
 import DetailView from '@/app/_components/DetailView';
 import type { NasaItem } from '@/app/_types/nasa';
 
@@ -120,4 +121,10 @@ describe('DetailView', () => {
 
     expect(screen.getByRole('heading', { name: /test title/i })).toBeInTheDocument();
   });
+
+  it("has no accessibility violations", async () => {
+  const { container } = render(<DetailView item={mockItem} />);
+  const results = await axe(container);
+  expect(results).toHaveNoViolations();
+});
 });

@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { axe } from "jest-axe";
 import Filters from "@/app/_components/Filters";
 
 describe("Filters", () => {
@@ -57,4 +58,12 @@ describe("Filters", () => {
     expect(mockOnChange).toHaveBeenCalledTimes(2);
     expect(mockOnChange).toHaveBeenLastCalledWith("video");
   });
+
+  it("has no accessibility violations", async () => {
+  const { container } = render(
+    <Filters mediaType="all" onMediaTypeChange={jest.fn()} />
+  );
+  const results = await axe(container);
+  expect(results).toHaveNoViolations();
+});
 });

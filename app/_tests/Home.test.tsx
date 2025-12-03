@@ -2,6 +2,7 @@
 /* eslint-disable react/display-name */
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { axe } from 'jest-axe';
 import Home from '@/app/page';
 import { fetchDataAsync } from '@/app/_utils/fetch';
 import type { NasaSearchResponse } from '@/app/_types/nasa';
@@ -152,4 +153,11 @@ it('filters results by media type (video)', async () => {
   await waitFor(() => {
     expect(mockFetch).toHaveBeenLastCalledWith('mars', 'video', 1);
   });
+
+});
+// accessibility check
+it('has no accessibility violations', async () => {
+  const { container } = render(<Home />);
+  const results = await axe(container);
+  expect(results).toHaveNoViolations();
 });

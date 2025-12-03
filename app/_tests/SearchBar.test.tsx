@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { axe } from "jest-axe";
 import SearchBar from '@/app/_components/SearchBar';
 
 describe('SearchBar', () => {
@@ -96,5 +97,12 @@ describe('SearchBar', () => {
 
     expect(mockSearch).not.toHaveBeenCalled();
   });
+
+
+it("has no accessibility violations", async () => {
+  const { container } = render(<SearchBar onSearch={jest.fn()} />);
+  const results = await axe(container);
+  expect(results).toHaveNoViolations();
+});
 
 });

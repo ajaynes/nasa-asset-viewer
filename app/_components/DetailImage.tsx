@@ -61,7 +61,7 @@ export default function DetailImage({
             onClick={onOpenLightbox}
             className="block w-full"
           >
-            <div className="relative mx-auto aspect-video max-h-160 min-h-140 w-full">
+            <div className="relative mx-auto aspect-video max-h-160 md:min-h-140 w-full">
               <Image
                 src={mediaUrl}
                 alt={title}

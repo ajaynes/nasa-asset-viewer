@@ -4,7 +4,7 @@ export default function DetailSkeleton() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 animate-pulse">
       <div className="grid gap-8 lg:grid-cols-2">
-        <div className="h-[26rem] rounded-lg bg-slate-200" />
+        <div className="h-104 rounded-lg bg-slate-200" />
         <div className="space-y-4">
           <div className="h-6 w-3/4 rounded bg-slate-200" />
           <div className="h-4 w-full rounded bg-slate-100" />

@@ -13,7 +13,7 @@ export default function Filters({ mediaType, onMediaTypeChange }: FiltersProps) 
   };
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 items-center">
       <div className="inline-flex rounded-full border border-slate-300 bg-white px-4 py-2 shadow-sm">
         <label className="relative inline-flex cursor-pointer select-none items-center">
           <input

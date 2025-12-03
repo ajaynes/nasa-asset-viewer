@@ -20,7 +20,7 @@ export default function Card({ title, thumbnailUrl, keywords = [], mediaType, id
         </div>
 
         <div className='flex flex-1 flex-col gap-3 p-4'>
-          <h3 className='line-clamp-2 text-lg font-semibold text-slate-900'>{title}</h3>
+          <h1 className='line-clamp-2 text-lg font-semibold text-slate-900'>{title}</h1>
 
           {keywords?.length > 0 && (
             <div className='flex flex-wrap gap-2'>
@@ -34,7 +34,7 @@ export default function Card({ title, thumbnailUrl, keywords = [], mediaType, id
             </div>
           )}
 
-          <div className='mt-auto flex items-center justify-between pt-2 text-xs text-slate-500'>
+          <div className='mt-auto flex items-center justify-between pt-2 text-xs text-slate-900'>
             <span className='inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 font-medium uppercase tracking-wide'>
               <span className='h-1.5 w-1.5 rounded-full bg-emerald-500' />
               {mediaType}

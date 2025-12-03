@@ -8,6 +8,7 @@ type SearchBarProps = {
 
 export default function SearchBar({ onSearch }: SearchBarProps) {
   const [inputValue, setInputValue] = useState('');
+  const [isFocused, setIsFocused] = useState(false);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
@@ -23,16 +24,16 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
 
   return (
     <form onSubmit={handleSubmit} className='flex w-full flex-1 items-center gap-3'>
-      <label htmlFor="search-input" className="sr-only">
-        Search NASA media
-      </label>
       <div className='relative flex-1'>
         <input
           type='text'
-          placeholder='Search NASA media…'
+          placeholder={isFocused || inputValue.length > 0 ? '' : 'Search NASA media…'}
           className='w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 pr-10 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/40'
           value={inputValue}
           onChange={handleChange}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          aria-label="Search NASA media"
         />
       </div>
       <button

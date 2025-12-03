@@ -1,15 +1,18 @@
 "use client";
 
+import { useEffect } from "react";
 import Image from "next/image";
 
-type MediaKind = "image" | "video" | "other";
+type MediaType = "image" | "video" | "other";
 
 type LightboxProps = {
   isOpen: boolean;
   onClose: () => void;
-  title?: string;
+  title: string;
   mediaUrl: string;
-  mediaKind: MediaKind;
+  mediaType: MediaType;
+  posterUrl?: string | null;
+  captionsUrl?: string | null;
 };
 
 export default function Lightbox({
@@ -17,74 +20,80 @@ export default function Lightbox({
   onClose,
   title,
   mediaUrl,
-  mediaKind,
+  mediaType,
+  posterUrl,
+  captionsUrl,
 }: LightboxProps) {
-  if (!isOpen || !mediaUrl) return null;
+  useEffect(() => {
+    if (!isOpen) return;
 
-  const isImage = mediaKind === "image";
-  const isVideo = mediaKind === "video";
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") onClose();
+    }
 
-  const handleBackdropClick = () => {
-    onClose();
-  };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
 
-  const handleInnerClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
-    e.stopPropagation();
-  };
+  if (!isOpen) return null;
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
-      onClick={handleBackdropClick}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70"
+      aria-modal="true"
+      role="dialog"
     >
+      <div
+        className="absolute inset-0"
+        onClick={onClose}
+        aria-hidden="true"
+      />
+
       <button
         type="button"
-        className="absolute right-4 top-4 rounded-full bg-black/70 px-3 py-1 text-sm font-medium text-white hover:bg-black cursor-pointer"
-        onClick={(e) => {
-          e.stopPropagation();
-          onClose();
-        }}
+        onClick={onClose}
+        className="fixed right-4 top-4 z-60 py-1 text-md font-medium text-slate-100 shadow cursor-pointer"
       >
-        ✕ Close
+        X Close
       </button>
 
-      {isImage && (
-        <div
-          className="relative h-[80vh] w-full max-w-5xl"
-          onClick={handleInnerClick}
-        >
-          <Image
-            src={mediaUrl}
-            alt={title ?? "NASA media"}
-            fill
-            className="object-contain"
-            sizes="100vw"
-          />
+      <div className="relative z-55 flex h-full w-full items-center justify-center p-4">
+        <div className="flex h-full w-full max-h-[95vh] max-w-[95vw] flex-col rounded-lg p-4 shadow-2xl">
+          <div className="flex flex-1 items-center justify-center overflow-hidden rounded-md">
+            {mediaType === "video" ? (
+              <video
+                className="max-h-[90vh] max-w-[95vw]"
+                controls
+                autoPlay
+                poster={posterUrl || undefined}
+              >
+                <source src={mediaUrl} />
+                {captionsUrl && (
+                  <track
+                    kind="subtitles"
+                    src={captionsUrl}
+                    srcLang="en"
+                    label="English"
+                    default
+                  />
+                )}
+                Your browser does not support videos.
+              </video>
+            ) : (
+              <div className="relative h-[80vh] w-[95vw] max-w-384">
+                <Image
+                  src={mediaUrl}
+                  alt={title}
+                  fill
+                  sizes="100vw"
+                  className="object-contain"
+                  priority
+                />
+              </div>
+            )}
+          </div>
         </div>
-      )}
-
-      {isVideo && (
-        <div
-          className="w-full max-w-5xl"
-          onClick={handleInnerClick}
-        >
-          <video
-            src={mediaUrl}
-            controls
-            autoPlay
-            className="max-h-[80vh] w-full rounded-xl bg-black"
-          />
-        </div>
-      )}
-
-      {!isImage && !isVideo && (
-        <div
-          className="flex w-full max-w-md items-center justify-center rounded-xl bg-slate-900 p-6 text-sm text-slate-100"
-          onClick={handleInnerClick}
-        >
-          No preview available
-        </div>
-      )}
+      </div>
     </div>
   );
 }

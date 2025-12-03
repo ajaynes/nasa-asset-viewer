@@ -6,15 +6,24 @@ import DetailImage from "@/app/_components/DetailImage";
 import Lightbox from "@/app/_components/Lightbox";
 import DetailInfo from "@/app/_components/DetailInfo";
 
+type MediaType = "image" | "video" | "other";
+
 type DetailViewProps = {
   item: NasaItem;
+  explicitMediaUrl?: string | null;
+  posterUrl?: string | null;
+  captionsUrl?: string | null;
 };
 
-type MediaKind = "image" | "video" | "other";
-
-export default function DetailView({ item }: DetailViewProps) {
+export default function DetailView({
+  item,
+  explicitMediaUrl,
+  posterUrl,
+  captionsUrl,
+}: DetailViewProps) {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const meta = item.data[0];
+
   if (!meta) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-8 text-sm text-slate-600">
@@ -32,20 +41,32 @@ export default function DetailView({ item }: DetailViewProps) {
   const canonicalLink =
     item.links?.find((link) => link.rel === "canonical") ?? firstLink ?? null;
 
-  const mainMediaUrl = previewLink?.href ?? "";
-  const downloadUrl = canonicalLink?.href ?? mainMediaUrl;
+  const fallbackImageUrl = previewLink?.href ?? "";
+  const fallbackDownloadUrl = canonicalLink?.href ?? fallbackImageUrl;
 
-  let mediaKind: MediaKind = "other";
+  let mediaType: MediaType = "other";
 
   if (rawMediaType === "image") {
-    mediaKind = "image";
+    mediaType = "image";
   } else if (rawMediaType === "video") {
-    mediaKind = "video";
-  } else if (/\.(png|jpe?g|gif|webp|tif?f)$/i.test(mainMediaUrl)) {
-    mediaKind = "image";
-  } else if (/\.(mp4|mov|webm|m4v|ogv)$/i.test(mainMediaUrl)) {
-    mediaKind = "video";
+    mediaType = "video";
+  } else if (/\.(png|jpe?g|gif|webp|tif?f)$/i.test(fallbackImageUrl)) {
+    mediaType = "image";
+  } else if (/\.(mp4|mov|webm|m4v|ogv)$/i.test(fallbackImageUrl)) {
+    mediaType = "video";
   }
+
+  const mainMediaUrl =
+    mediaType === "video" && explicitMediaUrl
+      ? explicitMediaUrl
+      : explicitMediaUrl || fallbackImageUrl;
+
+  const downloadUrl =
+    mediaType === "video" && explicitMediaUrl
+      ? explicitMediaUrl
+      : fallbackDownloadUrl;
+
+  const poster = posterUrl || (mediaType === "image" ? mainMediaUrl : null);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
@@ -53,8 +74,10 @@ export default function DetailView({ item }: DetailViewProps) {
         <DetailImage
           title={meta.title}
           mediaUrl={mainMediaUrl}
-          mediaKind={mediaKind}
+          mediaType={mediaType}
           downloadUrl={downloadUrl}
+          posterUrl={poster}
+          captionsUrl={captionsUrl}
           onOpenLightbox={() => setLightboxOpen(true)}
         />
 
@@ -74,7 +97,9 @@ export default function DetailView({ item }: DetailViewProps) {
         onClose={() => setLightboxOpen(false)}
         title={meta.title}
         mediaUrl={mainMediaUrl}
-        mediaKind={mediaKind}
+        mediaType={mediaType}
+        posterUrl={poster}
+        captionsUrl={captionsUrl}
       />
     </div>
   );

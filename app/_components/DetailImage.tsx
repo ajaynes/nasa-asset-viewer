@@ -1,95 +1,119 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 
-type MediaKind = "image" | "video" | "other";
+type MediaType = "image" | "video" | "other";
 
 type DetailImageProps = {
-  title?: string;
+  title: string;
   mediaUrl: string;
-  mediaKind: MediaKind;
+  mediaType: MediaType;
   downloadUrl?: string;
+  posterUrl?: string | null;
+  captionsUrl?: string | null;
   onOpenLightbox: () => void;
 };
 
 export default function DetailImage({
   title,
   mediaUrl,
-  mediaKind,
+  mediaType,
   downloadUrl,
+  posterUrl,
+  captionsUrl,
   onOpenLightbox,
 }: DetailImageProps) {
   if (!mediaUrl) {
     return (
-      <div className="flex h-full items-center justify-center rounded-xl border border-dashed border-slate-300 bg-slate-50 p-6 text-sm text-slate-500">
-        No preview available
+      <div className="flex aspect-video w-full items-center justify-center rounded-lg bg-slate-100 text-sm text-slate-600">
+        No media available.
       </div>
     );
   }
 
-  const isImage = mediaKind === "image";
-  const isVideo = mediaKind === "video";
+  const resolvedDownloadUrl = downloadUrl || mediaUrl;
 
   return (
     <div className="space-y-4">
-      <button
-        type="button"
-        onClick={onOpenLightbox}
-        className="group relative block w-full overflow-hidden rounded-xl border border-slate-200 bg-slate-900 shadow-sm cursor-pointer"
-      >
-        {isImage && (
-          <div className="relative aspect-4/3 w-full">
-            <Image
-              src={mediaUrl}
-              alt={title ?? "NASA media"}
-              fill
-              className="object-contain transition-transform group-hover:scale-[1.02]"
-              sizes="(min-width: 1024px) 50vw, 100vw"
-            />
-          </div>
+      <div className="overflow-hidden border border-slate-200 bg-slate-900">
+        {mediaType === "video" ? (
+          <video
+            className="h-auto max-h-104 w-full object-contain"
+            controls
+            poster={posterUrl || undefined}
+          >
+            <source src={mediaUrl} />
+            {captionsUrl && (
+              <track
+                kind="subtitles"
+                src={captionsUrl}
+                srcLang="en"
+                label="English"
+                default
+              />
+            )}
+            Your browser does not support videos.
+          </video>
+        ) : (
+          <button
+            type="button"
+            onClick={onOpenLightbox}
+            className="block w-full"
+          >
+            <div className="relative mx-auto aspect-video max-h-160 min-h-140 w-full">
+              <Image
+                src={mediaUrl}
+                alt={title}
+                fill
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                className="object-cover"
+                priority
+              />
+            </div>
+          </button>
         )}
-
-        {isVideo && (
-          <div className="relative aspect-video w-full">
-            <video
-              src={mediaUrl}
-              controls
-              className="h-full w-full rounded-xl bg-black"
-            />
-          </div>
-        )}
-
-        {!isImage && !isVideo && (
-          <div className="flex aspect-4/3 items-center justify-center bg-slate-800 text-sm text-slate-200">
-            Preview not available
-          </div>
-        )}
-
-        <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent opacity-0 transition group-hover:opacity-100" />
-        <span className="pointer-events-none absolute bottom-3 right-3 rounded-full bg-black/70 px-3 py-1 text-xs font-medium text-white shadow-sm">
-          Click to enlarge
-        </span>
-      </button>
-
-      {downloadUrl && (
-        <a
-          href={downloadUrl}
-          target="_blank"
-          rel="noreferrer"
-          className="inline-flex items-center justify-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/60"
+      </div>
+      <div className="flex flex-wrap gap-3 justify-center">
+        <button
+          type="button"
+          onClick={onOpenLightbox}
+          className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-indigo-800 cursor-pointer"
         >
-        <Image
+
+          <Image
           className="dark:invert"
-          src="/download.svg"
-          alt="download icon"
-          width={25}
+          src="/fullscreen.svg"
+          alt="fullscreen icon"
+          width={15}
           height={20}
           style={{marginRight: 15}}
           priority
         />
-        Download {isVideo ? "video" : "image"}
-        </a>
-      )}
-    </div>
+        {mediaType === "video" ? "View Fullscreen" : "View Full Image"}
+        </button>
+
+        <div>
+          <Link
+            href={resolvedDownloadUrl}
+            download
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-indigo-800"
+          >
+            <Image
+            className="dark:invert"
+            src="/download.svg"
+            alt="download icon"
+            width={25}
+            height={20}
+            style={{marginRight: 15}}
+            priority
+          />
+            Download {mediaType === "video" ? "Video" : "Image"}
+          </Link>
+          </div>
+        </div>
+      </div>
   );
 }

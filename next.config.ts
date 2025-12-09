@@ -9,6 +9,10 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  assetPrefix: '/nasa-asset-viewer/',
+  basePath: '/nasa-asset-viewer',
+  output: 'export',
+  reactStrictMode: true,
 };
 
 export default nextConfig;

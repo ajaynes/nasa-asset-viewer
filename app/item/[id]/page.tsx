@@ -22,6 +22,7 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
     );
   }
 
+  // get the media type, preview link, and captions link
   const meta = item.data?.[0];
   const mediaType = meta?.media_type?.toLowerCase();
 
@@ -36,6 +37,7 @@ export default async function ItemDetailPage({ params }: { params: Promise<{ id:
   let posterUrl: string | null = previewLink?.href ?? null;
   let captionsUrl: string | null = captionsLink?.href ?? null;
 
+  // if the media is a video, get the manifest then the best quality video, poster, and captions. else use image url
   if (mediaType === "video") {
     const manifest = await fetchAssetManifest(meta.nasa_id);
 

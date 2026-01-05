@@ -10,9 +10,19 @@ type CardProps = {
 };
 
 export default function Card({ title, thumbnailUrl, keywords = [], mediaType, id }: CardProps) {
+  const cleanKeywords: string[] = [];
+
+  if (keywords.length > 0) {
+    if (keywords[0].includes(',')) {
+      cleanKeywords.push(...keywords[0].split(','));
+    } else {
+      cleanKeywords.push(...keywords);
+    }
+  }
+
   return (
     <Link href={`/item/${id}`}>
-      <article className="flex h-full flex-col overflow-hidden rounded-md border border-slate-200 bg-white shadow-md">
+      <article className="flex h-full flex-col overflow-hidden rounded-md border bg-white shadow-md border-white hover:shadow-lg hover:shadow-gray-950 hover:border-blue-500">
         <div className="relative w-full overflow-hidden bg-slate-100">
           <div className="relative aspect-video">
             {thumbnailUrl && (
@@ -29,10 +39,10 @@ export default function Card({ title, thumbnailUrl, keywords = [], mediaType, id
 
         <div className="flex flex-1 flex-col gap-3 p-4">
           <h1 className="line-clamp-2 text-lg font-semibold text-slate-900">{title}</h1>
-          {/* TODO: some of the keyword are not in array, but instead in a string - issue from the database. if keywords are single string, split at "," */}
-          {keywords?.length > 0 && (
+
+          {cleanKeywords?.length > 0 && (
             <div className="flex flex-wrap gap-2">
-              {keywords.slice(0, 4).map((keyword, i) => (
+              {cleanKeywords.splice(0, 4).map((keyword, i) => (
                 <span
                   key={`${keyword}-${i}`}
                   className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-700"

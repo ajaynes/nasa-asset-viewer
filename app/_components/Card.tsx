@@ -29,7 +29,7 @@ export default function Card({ title, thumbnailUrl, keywords = [], mediaType, id
 
         <div className="flex flex-1 flex-col gap-3 p-4">
           <h1 className="line-clamp-2 text-lg font-semibold text-slate-900">{title}</h1>
-
+          {/* TODO: some of the keyword are not in array, but instead in a string - issue from the database. if keywords are single string, split at "," */}
           {keywords?.length > 0 && (
             <div className="flex flex-wrap gap-2">
               {keywords.slice(0, 4).map((keyword, i) => (
